@@ -46,6 +46,43 @@ class ViewController: UIViewController, CLLocationManagerDelegate{
         speedLabel.text = "Speed: \(String(location.speed))"
         courseLabel.text = "Course: \(String(location.course))"
         altitudeLabel.text = "Altitude: \(String(location.altitude))"
+        
+        CLGeocoder().reverseGeocodeLocation(location) { (placemarks, error) in
+            if error != nil {
+                print(error!)
+            } else {
+                if let placemark = placemarks?[0] {
+                
+                var address = ""
+                
+                    if placemark.subThoroughfare != nil{
+                        address += placemark.subThoroughfare! + " "
+                    }
+                    
+                    if placemark.thoroughfare != nil {
+                         address += placemark.thoroughfare! + "\n"
+                    }
+                    
+                    if placemark.subLocality != nil {
+                        address += placemark.subLocality! + "\n"
+                                       }
+                    
+                    if placemark.subAdministrativeArea != nil {
+                        address += placemark.subAdministrativeArea! + "\n"
+                                       }
+                    
+                    if placemark.postalCode != nil {
+                        address += placemark.postalCode! + "\n"
+                                       }
+                    
+                    if placemark.country != nil {
+                        address += placemark.country! + "\n"
+                                       }
+                    print(address)
+                    self.nearestAddressLabel.text = address
+                }
+            }
+        }
     }
 
 }
