@@ -7,14 +7,46 @@
 //
 
 import UIKit
+import CoreLocation
 
-class ViewController: UIViewController {
-
+class ViewController: UIViewController, CLLocationManagerDelegate{
+    @IBOutlet weak var latLabel: UILabel!
+    @IBOutlet weak var longLabel: UILabel!
+    @IBOutlet weak var speedLabel: UILabel!
+    @IBOutlet weak var courseLabel: UILabel!
+    @IBOutlet weak var altitudeLabel: UILabel!
+    @IBOutlet weak var nearestAddressLabel: UILabel!
+    
+    // we need a location manager
+    var locationManager = CLLocationManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        // we give delegate to location manager to this class
+        locationManager.delegate = self
+        
+        // accuracy of the location
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
+        // request user for location
+        locationManager.requestWhenInUseAuthorization()
+        
+        //start updating the location of the user
+        locationManager.startUpdatingLocation()
+        
     }
 
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location = locations[0]
+//        print(location)
+        latLabel.text = "Lat:  \(String(location.coordinate.latitude))"
+        longLabel.text = "Long: \(String(location.coordinate.longitude))"
+        speedLabel.text = "Speed: \(String(location.speed))"
+        courseLabel.text = "Course: \(String(location.course))"
+        altitudeLabel.text = "Altitude: \(String(location.altitude))"
+    }
 
 }
 
